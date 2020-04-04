@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${fileName}">File Detail</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .item-title {
+            margin-top: 16px;
+            margin-bottom: 3px;
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .item-value {
+            padding: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <ol id="breadcrumb" class="breadcrumb"></ol>
+    <h1 th:text="${fileName}"></h1>
+    <div class="info-item">
+        <div class="item-title">大小</div>
+        <div class="item-value" th:text="${fileSize}"></div>
+    </div>
+    <div class="info-item">
+        <div class="item-title">修改时间</div>
+        <div class="item-value" th:text="${#dates.format(lastModified, 'yyyy-MM-dd HH:mm:ss')}"></div>
+    </div>
+    <div class="info-item">
+        <div class="item-title">下载地址</div>
+        <div class="item-value"><a th:href="@{${path}(down='')}" th:text="${path}+'?down='"></a></div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    (function () {
+        /*<![CDATA[*/
+        var path = /*[[${path}]]*/ "";
+        /*]]>*/
+        var _path = "/";
+        var end = path.endsWith("/") ? end = path.length - 1 : path.length;
+
+        path.substring(1, end).split("\/").map((dir, id, arr) => {
+            _path += dir + "/";
+            if (id == arr.length - 1) {
+                $("#breadcrumb").append(`<span class="breadcrumb-item active">${dir}</span>`);
+                return;
+            }
+            $("#breadcrumb").append(`<a class="breadcrumb-item" href="${_path}">${dir}</a>`);
+        });
+    })();
+</script>
+</body>
+</html>
