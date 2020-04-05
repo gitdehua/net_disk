@@ -29,7 +29,7 @@ public class IndexController {
     }
 
     @RequestMapping("/home/**")
-    public ModelAndView homeController(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "down", required = false) String down) {
+    public ModelAndView homeController(HttpServletRequest req, HttpServletResponse res, @RequestParam(value = "get", required = false) String get) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("path", req.getServletPath());
 
@@ -37,7 +37,7 @@ public class IndexController {
         if (file.isDirectory()) {
             directory(modelAndView, file);
         } else if (file.isFile()) {
-            if (down != null) {
+            if (get != null) {
                 try {
                     res.setContentType("application/octet-stream");
                     res.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
@@ -93,7 +93,7 @@ public class IndexController {
     public void fileDetail(ModelAndView modelAndView, File file) {
         modelAndView.setViewName("fileDetail");
         modelAndView.addObject("fileName", file.getName());
-        modelAndView.addObject("fileSize",file.length());
-        modelAndView.addObject("lastModified",file.lastModified());
+        modelAndView.addObject("fileSize", file.length());
+        modelAndView.addObject("lastModified", file.lastModified());
     }
 }
