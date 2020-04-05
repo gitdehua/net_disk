@@ -1,14 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>登录</title>
+    <style type="text/css">
+        input:focus {
+            border-color: #555;
+            outline: 0;
+        }
+
+        #login-panel {
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        #login-panel > form {
+            box-shadow: 0 0 2px 0px rgba(219, 219, 219, 0.6);
+            padding: 15px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-top: 0;
+            margin-bottom: .5rem;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .input-items {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .input-item {
+            border: none;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .input-button {
+            border: none;
+            height: 30px;
+            border-radius: 15px;
+            background-color: #555;
+            color: #eee;
+        }
+    </style>
 </head>
-<body>
-<form method="post">
-    <label>密码</label>
-    <input name="password"/>
-    <input type="submit" value="登录"/>
-</form>
+
+<body style="margin:0;padding:0;">
+<div id="login-panel">
+    <form method="post">
+        <h4 class="form-label" style="text-align: center">
+            <img src="/img/login-form.svg" style="width: 2em;"/>
+        </h4>
+        <div class="input-items">
+            <input class="input-item" placeholder="密码" name="password"/>
+        </div>
+        <input class="input-button" type="submit" value="登录"/>
+    </form>
+</div>
 </body>
+
 </html>
