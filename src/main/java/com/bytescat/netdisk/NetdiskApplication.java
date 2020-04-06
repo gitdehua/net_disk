@@ -21,7 +21,7 @@ public class NetdiskApplication {
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean bean = new FilterRegistrationBean(new LoginFilter());
-        bean.addUrlPatterns("/home/*", "/admin/*");
+        bean.addUrlPatterns("/home/*", "/admin/*", "/load/");
         return bean;
     }
 }
