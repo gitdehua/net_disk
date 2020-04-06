@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="upload(path)">
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">文件上传</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div id="fileList" class="modal-body list-group"></div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="addFile()">浏览</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function addFile() {
+            var fileLabel = document.createElement('input');
+            fileLabel.setAttribute("type", "file");
+            fileLabel.addEventListener("change", function () {
+                upload(fileLabel);
+            });
+            fileLabel.click();
+        }
+
+        function upload(fileLabel) {
+            var formData = new FormData(); // https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/Using_FormData_Objects
+
+            /*<![CDATA[*/
+            var path = /*[[${path}]]*/ "";
+            /*]]>*/
+
+            formData.append("path", path); // 路径
+            formData.append("file", fileLabel.files[0]); // HTML 文件类型input，由用户选择
+
+            var request = new XMLHttpRequest();
+            request.open("POST", "/upload");
+
+            var fileItem, p;
+            request.upload.onloadstart = function () {
+                // 开始上传
+                p = $("<div class=\"upload-progress\"></div>");
+                fileItem = $(`<div class="list-group-item d-flex justify-content-between"><div class="file-name">${fileLabel.files[0].name}</div></div>`).append(p);
+                $("#fileList").append(fileItem);
+            };
+            request.upload.onprogress = uploadProgress;
+            request.onerror = function (e) {
+                fileItem.addClass("list-group-item-danger");
+            };
+            request.onload = function () {
+                if (request.status != 200 || JSON.parse(request.response).code != 0) {
+                    fileItem.addClass("list-group-item-danger");
+                }
+            }
+            request.send(formData);
+
+            // 上传进度
+            function uploadProgress(e) {
+                p.html((e.loaded * 100 / e.total).toFixed(2) + "%");
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

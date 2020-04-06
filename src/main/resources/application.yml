@@ -1,6 +1,10 @@
 file-dir: "D:/tmp/"
 login-password: "admin"
 spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB # 单个文件的最大值
+      max-request-size: 210MB # 单次请求最大值
   devtools:
     restart:
       enabled: true  #设置开启热部署
@@ -8,3 +12,6 @@ spring:
       exclude: WEB-INF/**
   thymeleaf:
     cache: false    #页面不加载缓存，修改即时生效
+server:
+  tomcat:
+    max-swallow-size: 210MB
